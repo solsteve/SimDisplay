@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-17
  *
- *  Provides the interface for.
+ *  Provides the interface for the abstract simulation.
  */
 // =======================================================================================
 
+
 #ifndef __NMD_SIMULATION_HH
 #define __NMD_SIMULATION_HH
+
 
 #include <wx/wx.h>
 #include <wx/timer.h>
@@ -47,21 +49,25 @@
 
 namespace nmd {
 
+constexpr std::string WHITE {"#ffffff"};
+constexpr std::string GRAY1 {"#dddddd"};
+constexpr std::string GRAY2 {"#444444"};
+constexpr std::string BLACK {"#000000"};
 
 struct GUI_Colors {
-  std::string mainFrame     = "#ffff00";
-  std::string northPanel    = "#ff0000";
-  std::string centerPanel   = "#00ff00";
-  std::string southPanel    = "#0000ff";
-  std::string linesPanel    = "#ff00ff";
-  std::string controlPanel  = "#00ffff";
-  std::string displayPanel  = "#000020";
+  std::string mainFrame     = BLACK;
+  std::string northPanel    = GRAY2;
+  std::string centerPanel   = GRAY2;
+  std::string southPanel    = GRAY2;
+  std::string linesPanel    = GRAY2;
+  std::string controlPanel  = GRAY1;
+  std::string displayPanel  = "#0000ff";
 
   std::string startButtonFG = "#ffffff";
   std::string startButtonBG = "#008800";
 
   std::string quitButtonFG  = "#000000";
-  std::string quitButtonBG  = "#aaaa00";
+  std::string quitButtonBG  = "#ffff00";
 };
 
 
@@ -73,7 +79,7 @@ struct Configuration {
   // -------------------------------------------------------------------------------------
   std::string appTitle       {"LOTR"};
   Simulation* simulation     {nullptr};
-  wxTimer*    refreshTimer   {nullptr};
+  wxTimer*    refreshTimer   {nullptr};  //< pointer to the MainFrame's timer.
   int         numRows        {768};
   int         numColumns     {1024};
   int         scale          {1};
@@ -91,8 +97,6 @@ class Simulation : public Thread, ToggleButton::Listener {
   virtual ~Simulation  ();
 
   StatusText*          getStatusText          ();
-  void                 StartSim               (wxCommandEvent& event);
-
   virtual int          getNumberOfButtons     () const;
   virtual wxAnyButton* getButton              (wxPanel* parent, const int n);
 
@@ -108,8 +112,8 @@ class Simulation : public Thread, ToggleButton::Listener {
 
  protected:
 
-  Configuration* config;
-  StatusText*    statusText;
+  Configuration* config;      //< pointer to the shared configuration.
+  StatusText*    statusText;  //< pointer to the shared status text collection.
 
   bool proc_running;
 
@@ -120,7 +124,6 @@ class Simulation : public Thread, ToggleButton::Listener {
   virtual void firstPress (const int id);
   virtual void on         (const int id);
   virtual void off        (const int id);
-
 
 }; // end class Simulation
 

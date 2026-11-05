@@ -22,7 +22,7 @@
 // **                                                                                   **
 // ----- Modification History ------------------------------------------------------------
 //
-/** @brief  Frame Buffer
+/** @brief  Frame Buffer.
  *  @file   frame_buffer.cc
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-13
@@ -31,10 +31,17 @@
  */
 // =======================================================================================
 
+
 #include <frame_buffer.hh>
 
 
 // =======================================================================================
+/** Constructor.
+ * @param parent pointer to parent window.
+ * @param b      pointer to buffer.
+ * @param r      pointer to the color pallet.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::FrameBuffer::FrameBuffer(wxWindow* parent, nmd::ScreenBuffer* b, nmd::RGB_Pallet* r)
     : wxPanel(parent, wxID_ANY),
       image(b->size(0), b->size(1)),
@@ -51,46 +58,53 @@ nmd::FrameBuffer::FrameBuffer(wxWindow* parent, nmd::ScreenBuffer* b, nmd::RGB_P
 
 
 // =======================================================================================
+/* Update frame visual.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::FrameBuffer::updateFrame() {
   // -------------------------------------------------------------------------------------
-    const int nr = buffer->size(0);
-    const int nc = buffer->size(1);
+  const int nr = buffer->size(0);
+  const int nc = buffer->size(1);
 
-    unsigned char* pixels = image.GetData();
+  unsigned char* pixels = image.GetData();
 
-    for (int ir = 0; ir < nr; ++ir) {
-        for (int ic = 0; ic < nc; ++ic) {
+  for (int ir = 0; ir < nr; ++ir) {
+    for (int ic = 0; ic < nc; ++ic) {
 
-            const int   clr = buffer->get(ir, ic);
-            const rgb_s c   = pallet->get(clr);
+      const int   clr = buffer->get(ir, ic);
+      const rgb_s c   = pallet->get(clr);
 
-            const int offset = 3 * (ir * nc + ic);
+      const int offset = 3 * (ir * nc + ic);
 
-            pixels[offset    ] = c.red;
-            pixels[offset + 1] = c.grn;
-            pixels[offset + 2] = c.blu;
-        }
+      pixels[offset    ] = c.red;
+      pixels[offset + 1] = c.grn;
+      pixels[offset + 2] = c.blu;
     }
+  }
 
-    const wxSize size = GetClientSize();
+  const wxSize size = GetClientSize();
 
-    if (size.x <= 0 || size.y <= 0)
-        return;
+  if (size.x <= 0 || size.y <= 0)
+    return;
 
-    wxImage scaled = image.Scale(
-        size.x,
-        size.y,
-        wxIMAGE_QUALITY_NEAREST
-    );
+  wxImage scaled = image.Scale(
+      size.x,
+      size.y,
+      wxIMAGE_QUALITY_NEAREST
+                               );
 
-    bitmap = wxBitmap(scaled);
+  bitmap = wxBitmap(scaled);
 
-    Refresh(false);
+  Refresh(false);
 
 }
 
 
 // =======================================================================================
+/* Execute on paint.
+ *
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::FrameBuffer::OnPaint(wxPaintEvent&) {
   // -------------------------------------------------------------------------------------
 

@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-24
  *
- *  Provides the interface for.
+ *  Provides the interface for a collection of text fields.
  */
 // =======================================================================================
 
+
 #ifndef __NMD_STATUS_TEXT_HH
 #define __NMD_STATUS_TEXT_HH
+
 
 #include <wx/wx.h>
 
@@ -41,6 +43,7 @@
 
 
 namespace nmd {
+
 
 // =======================================================================================
 enum class TextPos {
@@ -57,20 +60,6 @@ enum class TextPos {
 // =======================================================================================
 class StatusText {
   // -------------------------------------------------------------------------------------
- protected:
-  TextConfig  north;
-  TextConfig  south;
-  TextConfig  ne;
-  TextConfig  nw;
-  TextConfig  se;
-  TextConfig  sw;
-  TextConfig* lines;
-  int         num_lines;
-
-  EMPTY_PROTOTYPE(StatusText);
-
-  TLOGGER_HEADER(logger);
-
  public:
   StatusText         (const int n);
   ~StatusText        ();
@@ -87,13 +76,27 @@ class StatusText {
   void setForeground (const int n, const uint8_t r, const uint8_t g, const uint8_t b);
   void setBackground (const int n, const uint8_t r, const uint8_t g, const uint8_t b);
 
-  void updateText();
- 
+  void updateText    ();
+
+
+ protected:
+  TextConfig  north;
+  TextConfig  south;
+  TextConfig  ne;
+  TextConfig  nw;
+  TextConfig  se;
+  TextConfig  sw;
+  TextConfig* lines;
+  int         num_lines;
+
+  EMPTY_PROTOTYPE(StatusText);
+
+  TLOGGER_HEADER(logger);
+
 }; // end class StatusText
 
 
 }; // end namespace nmd
-
 
 
 #endif

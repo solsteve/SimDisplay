@@ -23,18 +23,22 @@
 // ----- Modification History ------------------------------------------------------------
 //
 /** @brief  Text Configuration.
- *  @file   text_config.hh
+ *  @file   text_config.cc
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-22
  *
- *  Provides the interface for.
+ *  Provides the methods for custom text control field.
  */
 // =======================================================================================
+
 
 #include <text_config.hh>
 
 
 // =======================================================================================
+/** Constructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::TextConfig::TextConfig()
     : buffer{"blank"},
       foreground{0,0,0},
@@ -50,12 +54,19 @@ nmd::TextConfig::TextConfig()
 
 
 // =======================================================================================
+/** Destructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::TextConfig::~TextConfig() {
   // -------------------------------------------------------------------------------------
 }
 
 
 // =======================================================================================
+/** Set text value.
+ * @param[in] text value.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::TextConfig::setText(const std::string& str) {
   // -------------------------------------------------------------------------------------
   std::lock_guard<std::mutex> lock(mtx);
@@ -65,6 +76,12 @@ void nmd::TextConfig::setText(const std::string& str) {
 
 
 // =======================================================================================
+/** Set text foreground.
+ * @param[in] r   red   component value [0-255].
+ * @param[in] g   green component value [0-255].
+ * @param[in] b   blue  component value [0-255].
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::TextConfig::setForeground(const uint8_t r, const uint8_t g, const uint8_t b) {
   // -------------------------------------------------------------------------------------
   std::lock_guard<std::mutex> lock(mtx);
@@ -76,6 +93,12 @@ void nmd::TextConfig::setForeground(const uint8_t r, const uint8_t g, const uint
 
 
 // =======================================================================================
+/** Set text background.
+ * @param[in] r   red   component value [0-255].
+ * @param[in] g   green component value [0-255].
+ * @param[in] b   blue  component value [0-255].
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::TextConfig::setBackground(const uint8_t r, const uint8_t g, const uint8_t b) {
   // -------------------------------------------------------------------------------------
   std::lock_guard<std::mutex> lock(mtx);
@@ -87,6 +110,9 @@ void nmd::TextConfig::setBackground(const uint8_t r, const uint8_t g, const uint
 
 
 // =======================================================================================
+/** Update text field.
+ */
+// ---------------------------------------------------------------------------------------
 bool nmd::TextConfig::update() {
   // -------------------------------------------------------------------------------------
   std::lock_guard<std::mutex> lock(mtx);

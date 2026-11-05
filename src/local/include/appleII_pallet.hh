@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-13
  *
- *  Provides an interface for a custom Apple II pallet.
+ *  Provides the interface for a custom Apple II pallet.
  */
 // =======================================================================================
 
+
 #ifndef __APPLEII_PALLET_HH
 #define __APPLEII_PALLET_HH
+
 
 #include <rgb_pallet.hh>
 
@@ -46,6 +48,7 @@ class AppleII_Pallet : public RGB_Pallet {
  public:
   AppleII_Pallet          ();
   virtual ~AppleII_Pallet ();
+
 }; // end class AppleII_Pallet
 
 

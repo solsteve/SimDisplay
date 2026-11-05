@@ -27,16 +27,22 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-17
  *
- *  Provides the interface for.
+ *  Provides the methods for a grid display based simulation.
  */
 // =======================================================================================
+
 
 #include <alpha_demo.hh>
 
 #include <Dice.hh>
 #include <appleII_pallet.hh>
 
+
 // =======================================================================================
+/** Constructor.
+ * @param cfg pointer to shared configuration.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::AlphaDemo::AlphaDemo(nmd::Configuration* cfg) :
     Simulation(cfg),
     delay{cfg->delay},
@@ -51,6 +57,9 @@ nmd::AlphaDemo::AlphaDemo(nmd::Configuration* cfg) :
 
 
 // =======================================================================================
+/** Destructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::AlphaDemo::~AlphaDemo() {
   // -------------------------------------------------------------------------------------
   delete pallet;
@@ -59,6 +68,10 @@ nmd::AlphaDemo::~AlphaDemo() {
 
 
 // =======================================================================================
+/** Number of buttons.
+ * @return number of available buttons.
+ */
+// ---------------------------------------------------------------------------------------
 int nmd::AlphaDemo::getMoreNumberOfButtons() const {
   // -------------------------------------------------------------------------------------
   return 2;
@@ -66,6 +79,12 @@ int nmd::AlphaDemo::getMoreNumberOfButtons() const {
 
 
 // =======================================================================================
+/** Get Buttons.
+ * @param parent pointer to the parent panel.
+ * @param n      button index.
+ * @return pointer to a new button instance.
+ */
+// ---------------------------------------------------------------------------------------
 wxAnyButton* nmd::AlphaDemo::getMoreButtons(wxPanel* parent, const int n) {
   // -------------------------------------------------------------------------------------
   if (n==1) {
@@ -87,6 +106,11 @@ wxAnyButton* nmd::AlphaDemo::getMoreButtons(wxPanel* parent, const int n) {
 
 
 // =======================================================================================
+/** Create a FrameBuffer.
+ * @param parent pointer to the parent panel.
+ * @return pointer to a new FrameBuffer.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::FrameBuffer* nmd::AlphaDemo::getFrameBuffer(wxPanel* parent) {
   // -------------------------------------------------------------------------------------
 
@@ -104,11 +128,9 @@ nmd::FrameBuffer* nmd::AlphaDemo::getFrameBuffer(wxPanel* parent) {
 
 
 
-
-
-
-
+// =======================================================================================
 struct Life {
+  // -------------------------------------------------------------------------------------
   int mnLive = 0;
   int mxLive = 0;
   int mnDead = 0;
@@ -117,8 +139,16 @@ struct Life {
 
 
 // =======================================================================================
+/**
+ * @param A     pointer to the grid.
+ * @param row   cell's row index.
+ * @param col   cell's column index.
+ * @param alive color index for live cells.
+ * @return
+ */
+// ---------------------------------------------------------------------------------------
 int Count(nmd::ScreenBuffer* A,
-           const int row, const int col, const int alive) {
+          const int row, const int col, const int alive) {
   // -------------------------------------------------------------------------------------
   int n = 0;
   if (A->get(row-1, col-1) == alive) n += 1;
@@ -134,6 +164,13 @@ int Count(nmd::ScreenBuffer* A,
 
 
 // =======================================================================================
+/** Execise rule.
+ * @param[in] a less.
+ * @param[in] x value.
+ * @param[in] b more.
+ * @return
+ */
+// ---------------------------------------------------------------------------------------
 bool rule(const int a, const int x, const int b) {
   // -------------------------------------------------------------------------------------
   if (x < a) { return true; }
@@ -143,10 +180,20 @@ bool rule(const int a, const int x, const int b) {
 
 
 // =======================================================================================
-int updateFlib(nmd::ScreenBuffer* A,
-           const int row, const int col, 
-           const Life& life,
-           const int dead, const int alive) {
+/** Update cell.
+ * @param A     pointer to the grid.
+ * @param row   cell's row index.
+ * @param col   cell's column index.
+ * @param life  reference to the life rules.
+ * @param dead  color index for dead cell.
+ * @param alive color index for live cell.
+ * @return 0 on success.
+ */
+// ---------------------------------------------------------------------------------------
+int updateCell(nmd::ScreenBuffer* A,
+               const int row, const int col, 
+               const Life& life,
+               const int dead, const int alive) {
   // -------------------------------------------------------------------------------------
   int center = A->get(row, col);
   int count  = Count(A, row, col, alive);
@@ -177,6 +224,13 @@ int updateFlib(nmd::ScreenBuffer* A,
 
 
 // =======================================================================================
+/** Seed the simulation.
+ * @param A     pointer to the grid.
+ * @param n     number of live cells.
+ * @param dead  color index for dead cell.
+ * @param alive color index for live cell.
+ */
+// ---------------------------------------------------------------------------------------
 void seed(nmd::ScreenBuffer* A, const int n, const int dead, const int alive) {
   // -------------------------------------------------------------------------------------
   Dice& dd = Dice::getInstance();
@@ -192,6 +246,9 @@ void seed(nmd::ScreenBuffer* A, const int n, const int dead, const int alive) {
 
 
 // =======================================================================================
+/** Main Simulation Loop.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::AlphaDemo::runProcess() {
   // -------------------------------------------------------------------------------------
   const Life life { 2, 3, 3, 3 };
@@ -211,7 +268,7 @@ void nmd::AlphaDemo::runProcess() {
   while(proc_running) {
     for (int ir=1; ir<nrow-1; ir++) {
       for (int ic=1; ic<ncol-1; ic++) {
-        updateFlib(grid, ir, ic, life, BLACK, WHITE);
+        updateCell(grid, ir, ic, life, BLACK, WHITE);
       }
     }
     Thread::msleep(300);

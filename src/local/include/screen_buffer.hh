@@ -31,8 +31,10 @@
  */
 // =======================================================================================
 
+
 #ifndef __SCREEN_BUFFER_HH
 #define __SCREEN_BUFFER_HH
+
 
 #include <Array2D.hh>
 #include <mutex>          // std::mutex
@@ -44,12 +46,6 @@ namespace nmd {
 // =======================================================================================
 class ScreenBuffer {
   // -------------------------------------------------------------------------------------
- protected:
-  Array2D<int,int> data;
-  int              num_rows;
-  int              num_cols;
-  std::mutex       mtx;
-
  public:
   ScreenBuffer  (const int nr, const int nc);
   ~ScreenBuffer (void);
@@ -59,10 +55,22 @@ class ScreenBuffer {
   int   size    (const int d=0) const;
   void  clear   (const int clr = 0);
 
+
+ protected:
+  Array2D<int,int> data;      //< grid data.
+  int              num_rows;  //< number of grid rows.
+  int              num_cols;  //< number of grid columns.
+  std::mutex       mtx;       //< thread synchonizing mutex.
+
 }; // end class ScreenBuffer
 
 
 // =======================================================================================
+/** Size.
+ * @param[in] dimension.
+ * @return size of dimension 0==rows, 1==columns.
+ */
+// ---------------------------------------------------------------------------------------
 inline int ScreenBuffer::size(const int d) const {
   // -------------------------------------------------------------------------------------
   return ((0==d)?(num_rows):(num_cols));

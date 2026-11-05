@@ -27,13 +27,19 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-13
  *
- *  Provides methods for a custom RGB pallet.
+ *  Provides the methods for a custom RGB pallet.
  */
 // =======================================================================================
 
+
 #include <rgb_pallet.hh>
 
+
 // =======================================================================================
+/** Constructor.
+ * @param n number of colors.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::RGB_Pallet::RGB_Pallet(const int n) : color_table{nullptr}, max_colors{n} {
   // -------------------------------------------------------------------------------------
   color_table = new nmd::rgb_s[n];
@@ -41,6 +47,9 @@ nmd::RGB_Pallet::RGB_Pallet(const int n) : color_table{nullptr}, max_colors{n} {
 
 
 // =======================================================================================
+/** Destructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::RGB_Pallet::~RGB_Pallet() {
   // -------------------------------------------------------------------------------------
   delete[] color_table;

@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-22
  *
- *  Provides the interface for.
+ *  Provides the interface for a custom text control field.
  */
 // =======================================================================================
 
+
 #ifndef __NMD_TEXTCONFIG_HH
 #define __NMD_TEXTCONFIG_HH
+
 
 #include <wx/wx.h>
 
@@ -48,6 +50,19 @@ namespace nmd {
 // =======================================================================================
 class TextConfig {
   // -------------------------------------------------------------------------------------
+ public:
+  TextConfig         ();
+  ~TextConfig        ();
+
+  void setTextCtrl   (wxTextCtrl* tp) { textCtrl = tp; };
+
+  void setText       (const std::string& str);
+  void setForeground (const uint8_t r, const uint8_t g, const uint8_t b);
+  void setBackground (const uint8_t r, const uint8_t g, const uint8_t b);
+
+  bool update        ();
+
+
  protected:
   std::string buffer;
   RGB               foreground;
@@ -60,18 +75,6 @@ class TextConfig {
   std::mutex        mtx;
 
   EMPTY_PROTOTYPE(TextConfig);
-
- public:
-  TextConfig         ();
-  ~TextConfig        ();
-
-  void setTextCtrl   (wxTextCtrl* tp) { textCtrl = tp; };
-
-  void setText       (const std::string& str);
-  void setForeground (const uint8_t r, const uint8_t g, const uint8_t b);
-  void setBackground (const uint8_t r, const uint8_t g, const uint8_t b);
-
-  bool update        ();
 
 }; // end class TextConfig
 

@@ -22,21 +22,27 @@
 // **                                                                                   **
 // ----- Modification History ------------------------------------------------------------
 //
-/** @brief  Main Appplication Frame
+/** @brief  Main Appplication Frame.
  *  @file   main_frame.cc
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-15
  *
- *  Provides an interface for the main application frame.
+ *  Provides the methods for the main application frame.
  */
 // =======================================================================================
+
 
 #include <main_frame.hh>
 #include <status_text.hh>
 
 #include <StringTool.hh>
 
+
 // =======================================================================================
+/** Constructor
+ * @param cfg pointer to shared configuration.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::MainFrame::MainFrame(nmd::Configuration* cfg) :
     wxFrame(nullptr,
             wxID_ANY,
@@ -136,7 +142,6 @@ nmd::MainFrame::MainFrame(nmd::Configuration* cfg) :
   linesPanel->SetBackgroundColour(wxColour(config->uiColors.linesPanel));
 
 
-
   // ----- assemble work panel -----------------------------------------------------------
 
   wxBoxSizer* workSizer = new wxBoxSizer(wxVERTICAL);
@@ -196,13 +201,17 @@ nmd::MainFrame::MainFrame(nmd::Configuration* cfg) :
        refreshTimer.GetId());
 }
 
+
 // =======================================================================================
+/** Refresh
+ */
 // ---------------------------------------------------------------------------------------
 void nmd::MainFrame::OnRefreshTimer(wxTimerEvent&) {
   // -------------------------------------------------------------------------------------
   frameBuffer->updateFrame();
   statusText->updateText();
 }
+
 
 // =======================================================================================
 // **                                M A I N   F R A M E                                **

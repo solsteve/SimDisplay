@@ -27,16 +27,19 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Nov-03
  *
- *  Provides the interface for a toggle button.
+ *  Provides the interface for a toggle button and listener abstract class.
  */
 // =======================================================================================
+
 
 #ifndef __NMD_TOGGLEBUTTON_HH
 #define __NMD_TOGGLEBUTTON_HH
 
+
 #include <wx/wx.h>
 
 #include <TLogger.hh>
+
 
 namespace nmd {
 
@@ -45,7 +48,7 @@ namespace nmd {
 class ToggleButton : public wxButton {
   // -------------------------------------------------------------------------------------
  public:
-  
+
   // =====================================================================================
   class Listener {
     // -----------------------------------------------------------------------------------
@@ -58,8 +61,6 @@ class ToggleButton : public wxButton {
   }; // end class ToggleButton::Listener
 
 
-
-
   ToggleButton  (wxPanel* parent, const int id=0);
   ~ToggleButton ();
 
@@ -67,6 +68,7 @@ class ToggleButton : public wxButton {
 
   void setOnText  (const std::string& text, const std::string& fg, const std::string& bg);
   void setOffText (const std::string& text, const std::string& fg, const std::string& bg);
+
 
  protected:
   Listener*   button_listener;

@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-13
  *
- *  Provides an interface for a custom RGB pallet.
+ *  Provides the interface for a custom RGB pallet.
  */
 // =======================================================================================
 
+
 #ifndef __RGB_PALLET_HH
 #define __RGB_PALLET_HH
+
 
 #include <trncmp.hh>
 
@@ -43,22 +45,15 @@ namespace nmd {
 // =======================================================================================
 struct rgb_s {
   // -------------------------------------------------------------------------------------
-  unsigned char red;
-  unsigned char grn;
-  unsigned char blu;
+  unsigned char red;   //< red   component (0-255)
+  unsigned char grn;   //< green component (0-255)
+  unsigned char blu;   //< blue  component (0-255)
 }; // end struct RGB
 
 
 // =======================================================================================
 class RGB_Pallet {
   // -------------------------------------------------------------------------------------
- protected:
-  rgb_s* color_table;
-  int    max_colors;
-
-  EMPTY_PROTOTYPE(RGB_Pallet);
-
-
  public:
   RGB_Pallet          (const int n);
   virtual ~RGB_Pallet ();
@@ -68,12 +63,28 @@ class RGB_Pallet {
   rgb_s get  (const int n) const;
   int   size () const;
 
+
+ protected:
+  rgb_s* color_table;  //< table of RGB values.
+  int    max_colors;   //< number of table entries.
+
+  EMPTY_PROTOTYPE(RGB_Pallet);
+
 }; // end class RGB_Pallet
 
 
 // =======================================================================================
+/** Set Color.
+ * @param[in] n color index.
+ * @param[in] r red   component value.
+ * @param[in] g green component value.
+ * @param[in] b blue  component value.
+ *
+ * Set a table entry with an RGB value.
+ */
+// ---------------------------------------------------------------------------------------
 inline  void RGB_Pallet::set(const int n,
-                 const unsigned char r, const unsigned char g, const unsigned char b) {
+                             const unsigned char r, const unsigned char g, const unsigned char b) {
   // -------------------------------------------------------------------------------------
   const int i = n % max_colors;
   color_table[i].red = r;
@@ -83,6 +94,11 @@ inline  void RGB_Pallet::set(const int n,
 
 
 // =======================================================================================
+/** Get Color
+ * @param[in] n color index.
+ * @return rgb structure intance.
+ */
+// ---------------------------------------------------------------------------------------
 inline  rgb_s RGB_Pallet::get(const int n) const {
   // -------------------------------------------------------------------------------------
   return color_table[n % max_colors];
@@ -90,6 +106,10 @@ inline  rgb_s RGB_Pallet::get(const int n) const {
 
 
 // =======================================================================================
+/** Size.
+ * @return number of colors in the pallet.
+ */
+// ---------------------------------------------------------------------------------------
 inline  int RGB_Pallet::size() const {
   // -------------------------------------------------------------------------------------
   return max_colors;

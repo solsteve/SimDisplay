@@ -27,9 +27,10 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-16
  *
- *  Provides an interface for the GUI entry point.
+ *  Provides the methods for the GUI entry point.
  */
 // =======================================================================================
+
 
 #include <entry_point.hh>
 #include <main_frame.hh>
@@ -39,14 +40,23 @@ nmd::Configuration* nmd::EntryPoint::startupConfiguration = nullptr;
 
 TLOGGER_REFERENCE(nmd::EntryPoint, logger);
 
+
 // =======================================================================================
+/** Asign the configuration.
+ * @param cfg pointer to shared configuration.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::EntryPoint::SetStartupConfiguration(nmd::Configuration* cfg) {
   // -------------------------------------------------------------------------------------
-    startupConfiguration = cfg;
+  startupConfiguration = cfg;
 }
 
 
 // =======================================================================================
+/* Run on GUI initialization.
+ * @return true on success.
+ */
+// ---------------------------------------------------------------------------------------
 bool nmd::EntryPoint::OnInit() {
   // -------------------------------------------------------------------------------------
 
@@ -67,6 +77,10 @@ bool nmd::EntryPoint::OnInit() {
 
 
 // =======================================================================================
+/* Run on GUI finalization.
+ * @return true on success.
+ */
+// ---------------------------------------------------------------------------------------
 int nmd::EntryPoint::OnExit() {
   // -------------------------------------------------------------------------------------
 

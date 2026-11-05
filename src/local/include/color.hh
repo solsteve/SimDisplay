@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-22
  *
- *  Provides the interface for.
+ *  Provides the interface for an RGB data structure.
  */
 // =======================================================================================
 
+
 #ifndef __NMD_COLOR_HH
 #define __NMD_COLOR_HH
+
 
 #include <trncmp.hh>
 
@@ -43,9 +45,9 @@ namespace nmd {
 // =======================================================================================
 struct RGB {
   // -------------------------------------------------------------------------------------
-  uint8_t red = 0;   // red   component (0-255)
-  uint8_t grn = 0;   // green component (0-255)
-  uint8_t blu = 0;   // blue  component (0-255)
+  uint8_t red = 0;   //< red   component (0-255)
+  uint8_t grn = 0;   //< green component (0-255)
+  uint8_t blu = 0;   //< blue  component (0-255)
 }; // end class TextConfig
 
 

@@ -27,26 +27,38 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Nov-03
  *
- *  Provides the methods for a toggle button.
+ *  Provides the methods for a toggle button and listener abstract class.
  */
 // =======================================================================================
+
 
 #include <toggle_button.hh>
 
 
 // =======================================================================================
+/** Constructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::ToggleButton::Listener::Listener() {
   // -------------------------------------------------------------------------------------
 }
 
 
 // =======================================================================================
+/** Destructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::ToggleButton::Listener::~Listener() {
   // -------------------------------------------------------------------------------------
 }
 
 
 // =======================================================================================
+/** Constructor.
+ * @param     parent panel.
+ * @param[in] button id number.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::ToggleButton::ToggleButton(wxPanel* parent, const int id) :
     wxButton(parent, wxID_ANY, "START"),
     button_listener{nullptr},
@@ -69,12 +81,19 @@ nmd::ToggleButton::ToggleButton(wxPanel* parent, const int id) :
 
 
 // =======================================================================================
+/** Destructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::ToggleButton::~ToggleButton() {
   // -------------------------------------------------------------------------------------
 }
 
 
 // =======================================================================================
+/** Set Listener.
+ * @param L pointer to a listener instance.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::ToggleButton::setListener(nmd::ToggleButton::Listener* L) {
   // -------------------------------------------------------------------------------------
   button_listener = L;
@@ -82,6 +101,12 @@ void nmd::ToggleButton::setListener(nmd::ToggleButton::Listener* L) {
 
 
 // =======================================================================================
+/** Set ON Text.
+ * @param[in] text button label text.
+ * @param[in] fg   button foreground color.
+ * @param[in] bg   button background color.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::ToggleButton::setOnText(const std::string& text,
                                   const std::string& fg, const std::string& bg) {
   // -------------------------------------------------------------------------------------
@@ -92,6 +117,12 @@ void nmd::ToggleButton::setOnText(const std::string& text,
 
 
 // =======================================================================================
+/** Set OFF Text.
+ * @param[in] text button label text.
+ * @param[in] fg   button foreground color.
+ * @param[in] bg   button background color.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::ToggleButton::setOffText(const std::string& text,
                                    const std::string& fg, const std::string& bg) {
   // -------------------------------------------------------------------------------------
@@ -102,6 +133,10 @@ void nmd::ToggleButton::setOffText(const std::string& text,
 
 
 // =======================================================================================
+/** Button function.
+ * @param event.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::ToggleButton::buttonPressed(wxCommandEvent& event) {
   // -------------------------------------------------------------------------------------
   if (button_listener) {

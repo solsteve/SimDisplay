@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-13
  *
- *  Provides an interface for a frame buffer.
+ *  Provides the interface for a frame buffer.
  */
 // =======================================================================================
 
+
 #ifndef __FRAME_BUFFER_HH
 #define __FRAME_BUFFER_HH
+
 
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
@@ -42,30 +44,31 @@
 #include <screen_buffer.hh>
 #include <rgb_pallet.hh>
 
+
 namespace nmd {
 
 
 // =======================================================================================
 class FrameBuffer : public wxPanel {
   // -------------------------------------------------------------------------------------
- protected:
-
-  wxImage        image;
-  wxBitmap       bitmap;
-  ScreenBuffer*  buffer;
-  RGB_Pallet*    pallet;
-
-
-    void OnPaint(wxPaintEvent& event);
-
-  EMPTY_PROTOTYPE(FrameBuffer);
-
  public:
 
   explicit FrameBuffer(wxWindow* parent, ScreenBuffer* b, RGB_Pallet* r);
 
-    void updateFrame();
-    void setRefresh(const int n);
+  void updateFrame ();
+  void setRefresh  (const int n);
+
+
+ protected:
+
+  wxImage       image;    //< display image.
+  wxBitmap      bitmap;   //< display bitmap.
+  ScreenBuffer* buffer;   //< pointer to the shared grid data.
+  RGB_Pallet*   pallet;   //< color pallet.
+
+  void OnPaint(wxPaintEvent& event);
+
+  EMPTY_PROTOTYPE(FrameBuffer);
 
 }; // end class FrameBuffer
 

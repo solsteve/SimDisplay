@@ -1,8 +1,8 @@
 // ====================================================================== BEGIN FILE =====
-// **                                                             **
+// **                                  A P P   M A I N                                  **
 // =======================================================================================
 // **                                                                                   **
-// **  Copyright (c) 202y, Stephen W. Soliday                                           **
+// **  Copyright (c) 2026, Stephen W. Soliday                                           **
 // **                      stephen.soliday@trncmp.org                                   **
 // **                      http://research.trncmp.org                                   **
 // **                                                                                   **
@@ -22,12 +22,12 @@
 // **                                                                                   **
 // ----- Modification History ------------------------------------------------------------
 //
-/** @brief  
+/** @brief  Demonstration main app.
  *  @file   app_main.cc
  *  @author Stephen W. Soliday
- *  @date   202y-Mmm-dd
+ *  @date   2026-Oct-15
  *
- *  Provides the interface an methods for.
+ *  Provides the interface an methods for a demonstration of the SimDisplay.
  */
 // =======================================================================================
 
@@ -36,6 +36,7 @@
 #include <entry_point.hh>
 
 #include <TLogger.hh>
+
 
 // =======================================================================================
 int main( int argc, char *argv[], char ** ) {
@@ -46,7 +47,7 @@ int main( int argc, char *argv[], char ** ) {
   // setup the configuration
   nmd::Configuration cfg;
 
-  cfg.appTitle     = "Voyager";
+  cfg.appTitle     = "Conway's Game of Life";
   cfg.numStatLines = 3;
   cfg.numRows      = 128;
   cfg.numColumns   = 128;

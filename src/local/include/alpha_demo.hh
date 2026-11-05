@@ -27,16 +27,19 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-17
  *
- *  Provides the interface for.
+ *  Provides the interface for a grid display based simulation.
  */
 // =======================================================================================
+
 
 #ifndef __NMD_ALPHADEMO_HH
 #define __NMD_ALPHADEMO_HH
 
+
 #include <simulation.hh>
 #include <screen_buffer.hh>
 #include <rgb_pallet.hh>
+
 
 namespace nmd {
 
@@ -44,14 +47,6 @@ namespace nmd {
 // =======================================================================================
 class AlphaDemo : public Simulation {
   // -------------------------------------------------------------------------------------
- protected:
-
-  int32_t       delay;
-  ScreenBuffer* grid;
-  RGB_Pallet*   pallet;
-
-  EMPTY_PROTOTYPE(AlphaDemo);
-
  public:
   AlphaDemo(Configuration* cfg);
   virtual ~AlphaDemo();
@@ -62,6 +57,15 @@ class AlphaDemo : public Simulation {
   virtual FrameBuffer* getFrameBuffer         (wxPanel* parent);
 
   virtual void         runProcess             ();
+
+
+ protected:
+
+  int32_t       delay;  //< simulation time step in milliseconds.
+  ScreenBuffer* grid;   //< grid values.
+  RGB_Pallet*   pallet; //< color pallet.
+
+  EMPTY_PROTOTYPE(AlphaDemo);
 
 }; // end class AlphaDemo
 

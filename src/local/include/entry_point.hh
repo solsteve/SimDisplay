@@ -27,12 +27,14 @@
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-16
  *
- *  Provides an interface for the GUI entry point.
+ *  Provides the interface for the GUI entry point.
  */
 // =======================================================================================
 
+
 #ifndef __ENTRY_POINT_HH
 #define __ENTRY_POINT_HH
+
 
 #include <wx/wx.h>
 
@@ -41,9 +43,19 @@
 
 namespace nmd {
 
+
 // =======================================================================================
 class EntryPoint : public wxApp {
   // -------------------------------------------------------------------------------------
+ public:
+  static void SetStartupConfiguration(Configuration* cfg);
+
+  EntryPoint() {};
+
+  bool OnInit() override;
+  int  OnExit() override;
+
+
  protected:
   static Configuration* startupConfiguration;
 
@@ -53,13 +65,6 @@ class EntryPoint : public wxApp {
 
   TLOGGER_HEADER(logger);
 
- public:
-  static void SetStartupConfiguration(Configuration* cfg);
-
-  EntryPoint() {};
-
-  bool OnInit() override;
-  int  OnExit() override;
 }; // end class EntryPoint
 
 

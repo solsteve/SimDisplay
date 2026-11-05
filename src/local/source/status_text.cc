@@ -23,20 +23,26 @@
 // ----- Modification History ------------------------------------------------------------
 //
 /** @brief  Status  text.
- *  @file   status_text.hh
+ *  @file   status_text.cc
  *  @author Stephen W. Soliday
  *  @date   2026-Oct-24
  *
- *  Provides the methods for.
+ *  Provides the methods for a collection of text fields.
  */
 // =======================================================================================
 
+
 #include <status_text.hh>
+
 
 TLOGGER_REFERENCE(nmd::StatusText, logger);
 
 
 // =======================================================================================
+/** Constructor.
+ * @param[in] n number of lines.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::StatusText::StatusText(const int n) :
     north{}, south{}, ne{}, nw{}, se{}, sw{}, lines{nullptr}, num_lines{n} {
   // -------------------------------------------------------------------------------------
@@ -45,6 +51,9 @@ nmd::StatusText::StatusText(const int n) :
 
 
 // =======================================================================================
+/** Destructor.
+ */
+// ---------------------------------------------------------------------------------------
 nmd::StatusText::~StatusText() {
   // -------------------------------------------------------------------------------------
   delete[] lines;
@@ -52,6 +61,13 @@ nmd::StatusText::~StatusText() {
 
 
 // =======================================================================================
+/** Assign Text Field.
+ * @param pos position in the status text.
+ * @param tp  pointer to an instance of a wxTextCtrl.
+ *
+ *  Assign an instance of a wxTextCtrl to a position.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setTextCtrl(nmd::TextPos pos, wxTextCtrl* tp) {
   // -------------------------------------------------------------------------------------
   switch(pos) {
@@ -67,6 +83,11 @@ void nmd::StatusText::setTextCtrl(nmd::TextPos pos, wxTextCtrl* tp) {
 
 
 // =======================================================================================
+/** Set text value.
+ * @param     pos position in the status text.
+ * @param[in] text value.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setText(nmd::TextPos pos,
                               const std::string& str) {
   // -------------------------------------------------------------------------------------
@@ -83,6 +104,13 @@ void nmd::StatusText::setText(nmd::TextPos pos,
 
 
 // =======================================================================================
+/** Set text foreground.
+ * @param     pos position in the status text.
+ * @param[in] r   red   component value [0-255].
+ * @param[in] g   green component value [0-255].
+ * @param[in] b   blue  component value [0-255].
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setForeground(nmd::TextPos pos,
                                     const uint8_t r, const uint8_t g, const uint8_t b) {
   // -------------------------------------------------------------------------------------
@@ -99,6 +127,13 @@ void nmd::StatusText::setForeground(nmd::TextPos pos,
 
 
 // =======================================================================================
+/** Set text background.
+ * @param     pos position in the status text.
+ * @param[in] r   red   component value [0-255].
+ * @param[in] g   green component value [0-255].
+ * @param[in] b   blue  component value [0-255].
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setBackground(nmd::TextPos pos,
                                     const uint8_t r, const uint8_t g, const uint8_t b) {
   // -------------------------------------------------------------------------------------
@@ -115,6 +150,13 @@ void nmd::StatusText::setBackground(nmd::TextPos pos,
 
 
 // =======================================================================================
+/** Assign Text Field.
+ * @param n   line position in the status text.
+ * @param tp  pointer to an instance of a wxTextCtrl.
+ *
+ *  Assign an instance of a wxTextCtrl to a position.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setTextCtrl(const int n, wxTextCtrl* tp) {
   // -------------------------------------------------------------------------------------
   lines[n].setTextCtrl(tp);
@@ -122,6 +164,11 @@ void nmd::StatusText::setTextCtrl(const int n, wxTextCtrl* tp) {
 
 
 // =======================================================================================
+/** Set text value.
+ * @param     n    line position in the status text.
+ * @param[in] text value.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setText(const int n,
                               const std::string& str) {
   // -------------------------------------------------------------------------------------
@@ -130,6 +177,13 @@ void nmd::StatusText::setText(const int n,
 
 
 // =======================================================================================
+/** Set text foreground.
+ * @param     n line position in the status text.
+ * @param[in] r red   component value [0-255].
+ * @param[in] g green component value [0-255].
+ * @param[in] b blue  component value [0-255].
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setForeground(const int n,
                                     const uint8_t r, const uint8_t g, const uint8_t b) {
   // -------------------------------------------------------------------------------------
@@ -138,6 +192,13 @@ void nmd::StatusText::setForeground(const int n,
 
 
 // =======================================================================================
+/** Set text background.
+ * @param     n line position in the status text.
+ * @param[in] r red   component value [0-255].
+ * @param[in] g green component value [0-255].
+ * @param[in] b blue  component value [0-255].
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::setBackground(const int n,
                                     const uint8_t r, const uint8_t g, const uint8_t b) {
   // -------------------------------------------------------------------------------------
@@ -146,6 +207,9 @@ void nmd::StatusText::setBackground(const int n,
 
 
 // =======================================================================================
+/** Update all text fields.
+ */
+// ---------------------------------------------------------------------------------------
 void nmd::StatusText::updateText() {
   // -------------------------------------------------------------------------------------
   north.update();
