@@ -1,5 +1,5 @@
 // ====================================================================== BEGIN FILE =====
-// **                             S C R E E N   B U F F E R                             **
+// **                             D I S P L A Y   P A N E L                             **
 // =======================================================================================
 // **                                                                                   **
 // **  Copyright (c) 2026, Stephen W. Soliday                                           **
@@ -22,67 +22,36 @@
 // **                                                                                   **
 // ----- Modification History ------------------------------------------------------------
 //
-/** @brief  Screen Buffer.
- *  @file   screen_buffer.hh
+/** @brief  Display Panel.
+ *  @file   display_panel.cc
  *  @author Stephen W. Soliday
- *  @date   2026-Oct-11
+ *  @date   2026-Oct-13
  *
- *  Provides the interface for a screen buffer.
+ *  Provides the methods for a display panel.
  */
 // =======================================================================================
 
 
-#ifndef __SCREEN_BUFFER_HH
-#define __SCREEN_BUFFER_HH
-
-
-#include <Array2D.hh>
-#include <mutex>          // std::mutex
-
-
-namespace nmd {
+#include <display_panel.hh>
 
 
 // =======================================================================================
-class ScreenBuffer {
-  // -------------------------------------------------------------------------------------
- public:
-  ScreenBuffer  (const int nr, const int nc);
-  ~ScreenBuffer (void);
-
-  void  set     (const int ir, const int ic, const int clr);
-  int   get     (const int ir, const int ic);
-  int   size    (const int d=0) const;
-  void  clear   (const int clr = 0);
-
-
- protected:
-  Array2D<int,int> data;      //< grid data.
-  int              num_rows;  //< number of grid rows.
-  int              num_cols;  //< number of grid columns.
-  std::mutex       mtx;       //< thread synchonizing mutex.
-
-}; // end class ScreenBuffer
-
-
-// =======================================================================================
-/** Size.
- * @param[in] dimension.
- * @return size of dimension 0==rows, 1==columns.
+/** Constructor.
+ * @param parent pointer to parent window.
+ * @param b      pointer to gridData.
+ * @param r      pointer to the color pallet.
  */
 // ---------------------------------------------------------------------------------------
-inline int ScreenBuffer::size(const int d) const {
+nmd::DisplayPanel::DisplayPanel(wxWindow* parent)
+    : wxPanel(parent, wxID_ANY)
+{
   // -------------------------------------------------------------------------------------
-  return ((0==d)?(num_rows):(num_cols));
+  SetBackgroundStyle(wxBG_STYLE_PAINT);
+
+  Bind(wxEVT_PAINT, &nmd::DisplayPanel::OnPaint, this);
 }
 
 
-}; // end namespace nmd
-
-
-#endif
-
-
 // =======================================================================================
-// **                             S C R E E N   B U F F E R                             **
+// **                             D I S P L A Y   P A N E L                             **
 // ======================================================================== END FILE =====

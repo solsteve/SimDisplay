@@ -40,7 +40,7 @@
 #include <wx/timer.h>
 
 #include <status_text.hh>
-#include <frame_buffer.hh>
+#include <display_panel.hh>
 #include <toggle_button.hh>
 
 #include <Thread.hh>
@@ -96,16 +96,15 @@ class Simulation : public Thread, ToggleButton::Listener {
   Simulation           (Configuration* cfg);
   virtual ~Simulation  ();
 
-  StatusText*          getStatusText          ();
-  virtual int          getNumberOfButtons     () const;
-  virtual wxAnyButton* getButton              (wxPanel* parent, const int n);
+  StatusText*           getStatusText          ();
+  virtual int           getNumberOfButtons     () const;
+  virtual wxAnyButton*  getButton              (wxPanel* parent, const int n);
+  virtual DisplayPanel* getDisplayPanel        (wxPanel* parent)              = 0;
 
-  virtual FrameBuffer* getFrameBuffer         (wxPanel* parent)              = 0;
+  virtual void          runProcess             ()                             = 0;
 
-  virtual void         runProcess             ()                             = 0;
-
-  virtual wxAnyButton* getMoreButtons         (wxPanel* parent, const int n) = 0;
-  virtual int          getMoreNumberOfButtons () const                       = 0;
+  virtual wxAnyButton*  getMoreButtons         (wxPanel* parent, const int n) = 0;
+  virtual int           getMoreNumberOfButtons () const                       = 0;
 
   virtual void run     ();
   void         quitSim (wxCommandEvent&);

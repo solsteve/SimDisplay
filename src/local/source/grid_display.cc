@@ -1,5 +1,5 @@
 // ====================================================================== BEGIN FILE =====
-// **                             S C R E E N   B U F F E R                             **
+// **                              G R I D   D I S P L A Y                              **
 // =======================================================================================
 // **                                                                                   **
 // **  Copyright (c) 2026, Stephen W. Soliday                                           **
@@ -22,87 +22,103 @@
 // **                                                                                   **
 // ----- Modification History ------------------------------------------------------------
 //
-/** @brief  Screen Buffer.
- *  @file   screen_buffer.cc
+/** @brief  Grid Display Panel.
+ *  @file   grid_display.cc
  *  @author Stephen W. Soliday
- *  @date   2026-Oct-11
+ *  @date   2026-Nov-06
  *
- *  Provides the methods for a screen buffer.
+ *  Provides the methods for a display panel.
  */
 // =======================================================================================
 
 
-#include <screen_buffer.hh>
+#include <grid_display.hh>
 
 
 // =======================================================================================
 /** Constructor.
- * @param[in] nr number of rows.
- * @param[in] nc number of columns.
+ * @param parent pointer to parent window.
+ * @param b      pointer to gridData.
+ * @param r      pointer to the color pallet.
  */
 // ---------------------------------------------------------------------------------------
-nmd::ScreenBuffer::ScreenBuffer(const int nr, const int nc) :
-    data{nr,nc},
-    num_rows{nr},
-    num_cols{nc},
-    mtx{} {
+nmd::GridDisplay::GridDisplay(wxWindow* parent, nmd::GridData* b, nmd::RGB_Pallet* r)
+    : DisplayPanel(parent),
+      image(b->size(0), b->size(1)),
+      bitmap(),
+      gridData{b},
+      pallet{r}
+{
   // -------------------------------------------------------------------------------------
+  SetBackgroundStyle(wxBG_STYLE_PAINT);
+
+  Bind(wxEVT_PAINT, &nmd::GridDisplay::OnPaint, this);
+}
+
+
+
+// =======================================================================================
+/* Update display visual.
+ */
+// ---------------------------------------------------------------------------------------
+void nmd::GridDisplay::updateDisplay() {
+  // -------------------------------------------------------------------------------------
+  const int nr = gridData->size(0);
+  const int nc = gridData->size(1);
+
+  unsigned char* pixels = image.GetData();
+
+  for (int ir = 0; ir < nr; ++ir) {
+    for (int ic = 0; ic < nc; ++ic) {
+
+      const int   clr = gridData->get(ir, ic);
+      const rgb_s c   = pallet->get(clr);
+
+      const int offset = 3 * (ir * nc + ic);
+
+      pixels[offset    ] = c.red;
+      pixels[offset + 1] = c.grn;
+      pixels[offset + 2] = c.blu;
+    }
+  }
+
+  const wxSize size = GetClientSize();
+
+  if (size.x <= 0 || size.y <= 0)
+    return;
+
+  wxImage scaled = image.Scale(
+      size.x,
+      size.y,
+      wxIMAGE_QUALITY_NEAREST
+                               );
+
+  bitmap = wxBitmap(scaled);
+
+  Refresh(false);
+
 }
 
 
 // =======================================================================================
-/** Destructor.
+/* Execute on paint.
+ *
  */
 // ---------------------------------------------------------------------------------------
-nmd::ScreenBuffer::~ScreenBuffer(void) {
+void nmd::GridDisplay::OnPaint(wxPaintEvent&) {
   // -------------------------------------------------------------------------------------
+
+  wxAutoBufferedPaintDC dc(this);
+
+  dc.SetBackground(*wxBLACK_BRUSH);
+  dc.Clear();
+
+  if (!bitmap.IsOk())
+    return;
+
+  dc.DrawBitmap(bitmap, 0, 0, false);
 }
 
-
 // =======================================================================================
-/** Set Value.
- * @param[in] nr  number of rows.
- * @param[in] nc  number of columns.
- * @param[in] clr color index.
- */
-// ---------------------------------------------------------------------------------------
-void nmd::ScreenBuffer::set(const int ir, const int ic, const int clr) {
-  // -------------------------------------------------------------------------------------
-  mtx.lock();
-  data.set(ir, ic, clr);
-  mtx.unlock();
-}
-
-
-// =======================================================================================
-/** Get Value.
- * @param[in] nr  number of rows.
- * @param[in] nc  number of columns.
- * @return clr color index.
- */
-// ---------------------------------------------------------------------------------------
-int nmd::ScreenBuffer::get(const int ir, const int ic) {
-  // -------------------------------------------------------------------------------------
-  mtx.lock();
-  const int c =  data.get(ir,ic);
-  mtx.unlock();
-  return c;
-}
-
-
-// =======================================================================================
-/** Clear Buffer.
- * @param[in] clr color index.
- */
-// ---------------------------------------------------------------------------------------
-void nmd::ScreenBuffer::clear(const int clr) {
-  // -------------------------------------------------------------------------------------
-  mtx.lock();
-  data.clear(clr);
-  mtx.unlock();
-}
-
-
-// =======================================================================================
-// **                             S C R E E N   B U F F E R                             **
+// **                              G R I D   D I S P L A Y                              **
 // ======================================================================== END FILE =====

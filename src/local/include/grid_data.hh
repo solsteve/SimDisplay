@@ -1,5 +1,5 @@
 // ====================================================================== BEGIN FILE =====
-// **                              F R A M E   B U F F E R                              **
+// **                                 G R I D   D A T A                                 **
 // =======================================================================================
 // **                                                                                   **
 // **  Copyright (c) 2026, Stephen W. Soliday                                           **
@@ -22,55 +22,59 @@
 // **                                                                                   **
 // ----- Modification History ------------------------------------------------------------
 //
-/** @brief  Frame Buffer
- *  @file   frame_buffer.hh
+/** @brief  Grid Data.
+ *  @file   grid_data.hh
  *  @author Stephen W. Soliday
- *  @date   2026-Oct-13
+ *  @date   2026-Oct-11
  *
- *  Provides the interface for a frame buffer.
+ *  Provides the interface for a grid data.
  */
 // =======================================================================================
 
 
-#ifndef __FRAME_BUFFER_HH
-#define __FRAME_BUFFER_HH
+#ifndef __GRID_DATA_HH
+#define __GRID_DATA_HH
 
 
-#include <wx/wx.h>
-#include <wx/dcbuffer.h>
-#include <wx/image.h>
-#include <wx/bitmap.h>
-
-#include <screen_buffer.hh>
-#include <rgb_pallet.hh>
+#include <Array2D.hh>
+#include <mutex>          // std::mutex
 
 
 namespace nmd {
 
 
 // =======================================================================================
-class FrameBuffer : public wxPanel {
+class GridData {
   // -------------------------------------------------------------------------------------
  public:
+  GridData  (const int nr, const int nc);
+  ~GridData (void);
 
-  explicit FrameBuffer(wxWindow* parent, ScreenBuffer* b, RGB_Pallet* r);
-
-  void updateFrame ();
-  void setRefresh  (const int n);
+  void  set     (const int ir, const int ic, const int clr);
+  int   get     (const int ir, const int ic);
+  int   size    (const int d=0) const;
+  void  clear   (const int clr = 0);
 
 
  protected:
+  Array2D<int,int> data;      //< grid data.
+  int              num_rows;  //< number of grid rows.
+  int              num_cols;  //< number of grid columns.
+  std::mutex       mtx;       //< thread synchonizing mutex.
 
-  wxImage       image;    //< display image.
-  wxBitmap      bitmap;   //< display bitmap.
-  ScreenBuffer* buffer;   //< pointer to the shared grid data.
-  RGB_Pallet*   pallet;   //< color pallet.
+}; // end class GridData
 
-  void OnPaint(wxPaintEvent& event);
 
-  EMPTY_PROTOTYPE(FrameBuffer);
-
-}; // end class FrameBuffer
+// =======================================================================================
+/** Size.
+ * @param[in] dimension.
+ * @return size of dimension 0==rows, 1==columns.
+ */
+// ---------------------------------------------------------------------------------------
+inline int GridData::size(const int d) const {
+  // -------------------------------------------------------------------------------------
+  return ((0==d)?(num_rows):(num_cols));
+}
 
 
 }; // end namespace nmd
@@ -80,5 +84,5 @@ class FrameBuffer : public wxPanel {
 
 
 // =======================================================================================
-// **                              F R A M E   B U F F E R                              **
+// **                                 G R I D   D A T A                                 **
 // ======================================================================== END FILE =====

@@ -56,7 +56,7 @@ class MainFrame : public wxFrame {
 
   Configuration* config;        //< pointer to the shared configuration.
   Simulation*    sim_thread;    //< pointer to the shared simulation thread.
-  FrameBuffer*   frameBuffer;   //< pointer to the shared display panel.
+  DisplayPanel*  displayPanel;  //< pointer to the shared display panel.
   StatusText*    statusText;    //< pointer to the shared status text collection.
   int            n_stat_lines;  //< number of status lines.
   wxTimer        refreshTimer;  //< original instance of the GUI timer.

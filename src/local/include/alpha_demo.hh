@@ -37,7 +37,7 @@
 
 
 #include <simulation.hh>
-#include <screen_buffer.hh>
+#include <grid_data.hh>
 #include <rgb_pallet.hh>
 
 
@@ -48,21 +48,20 @@ namespace nmd {
 class AlphaDemo : public Simulation {
   // -------------------------------------------------------------------------------------
  public:
-  AlphaDemo(Configuration* cfg);
-  virtual ~AlphaDemo();
+  AlphaDemo          (Configuration* cfg);
+  virtual ~AlphaDemo ();
 
-  virtual int          getMoreNumberOfButtons () const;
-  virtual wxAnyButton* getMoreButtons         (wxPanel* parent, const int n);
+  virtual int           getMoreNumberOfButtons () const;
+  virtual wxAnyButton*  getMoreButtons         (wxPanel* parent, const int n);
+  virtual DisplayPanel* getDisplayPanel        (wxPanel* parent);
 
-  virtual FrameBuffer* getFrameBuffer         (wxPanel* parent);
-
-  virtual void         runProcess             ();
+  virtual void          runProcess             ();
 
 
  protected:
 
   int32_t       delay;  //< simulation time step in milliseconds.
-  ScreenBuffer* grid;   //< grid values.
+  GridData*     grid;   //< grid values.
   RGB_Pallet*   pallet; //< color pallet.
 
   EMPTY_PROTOTYPE(AlphaDemo);

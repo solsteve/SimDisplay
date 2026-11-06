@@ -50,7 +50,7 @@ nmd::MainFrame::MainFrame(nmd::Configuration* cfg) :
             wxDefaultPosition),
     config(cfg),
     sim_thread{cfg->simulation},
-    frameBuffer{nullptr},
+    displayPanel{nullptr},
     statusText{nullptr},
     n_stat_lines{0},
     refreshTimer(this)
@@ -66,7 +66,7 @@ nmd::MainFrame::MainFrame(nmd::Configuration* cfg) :
 
   // -------------------------------------------------------------------------------------
 
-  frameBuffer  = config->simulation->getFrameBuffer(workPanel);
+  displayPanel  = config->simulation->getDisplayPanel(workPanel);
 
   statusText   = config->simulation->getStatusText();
   n_stat_lines = statusText->size();
@@ -146,7 +146,7 @@ nmd::MainFrame::MainFrame(nmd::Configuration* cfg) :
 
   wxBoxSizer* workSizer = new wxBoxSizer(wxVERTICAL);
 
-  workSizer->Add(frameBuffer,  1, wxEXPAND | wxALL, 1);
+  workSizer->Add(displayPanel, 1, wxEXPAND | wxALL, 1);
   workSizer->Add(linesPanel,   0, wxEXPAND | wxALL, 1);
 
   workPanel->SetSizer(workSizer);
@@ -208,7 +208,7 @@ nmd::MainFrame::MainFrame(nmd::Configuration* cfg) :
 // ---------------------------------------------------------------------------------------
 void nmd::MainFrame::OnRefreshTimer(wxTimerEvent&) {
   // -------------------------------------------------------------------------------------
-  frameBuffer->updateFrame();
+  displayPanel->updateDisplay();
   statusText->updateText();
 }
 

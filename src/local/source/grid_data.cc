@@ -1,5 +1,5 @@
 // ====================================================================== BEGIN FILE =====
-// **                              F R A M E   B U F F E R                              **
+// **                                 G R I D   D A T A                                 **
 // =======================================================================================
 // **                                                                                   **
 // **  Copyright (c) 2026, Stephen W. Soliday                                           **
@@ -22,103 +22,87 @@
 // **                                                                                   **
 // ----- Modification History ------------------------------------------------------------
 //
-/** @brief  Frame Buffer.
- *  @file   frame_buffer.cc
+/** @brief  Grid Data.
+ *  @file   grid_data.cc
  *  @author Stephen W. Soliday
- *  @date   2026-Oct-13
+ *  @date   2026-Oct-11
  *
- *  Provides the methods for a frame buffer.
+ *  Provides the methods for a grid data.
  */
 // =======================================================================================
 
 
-#include <frame_buffer.hh>
+#include <grid_data.hh>
 
 
 // =======================================================================================
 /** Constructor.
- * @param parent pointer to parent window.
- * @param b      pointer to buffer.
- * @param r      pointer to the color pallet.
+ * @param[in] nr number of rows.
+ * @param[in] nc number of columns.
  */
 // ---------------------------------------------------------------------------------------
-nmd::FrameBuffer::FrameBuffer(wxWindow* parent, nmd::ScreenBuffer* b, nmd::RGB_Pallet* r)
-    : wxPanel(parent, wxID_ANY),
-      image(b->size(0), b->size(1)),
-      bitmap(),
-      buffer{b},
-      pallet{r}
-{
+nmd::GridData::GridData(const int nr, const int nc) :
+    data{nr,nc},
+    num_rows{nr},
+    num_cols{nc},
+    mtx{} {
   // -------------------------------------------------------------------------------------
-  SetBackgroundStyle(wxBG_STYLE_PAINT);
-
-  Bind(wxEVT_PAINT, &nmd::FrameBuffer::OnPaint, this);
-}
-
-
-
-// =======================================================================================
-/* Update frame visual.
- */
-// ---------------------------------------------------------------------------------------
-void nmd::FrameBuffer::updateFrame() {
-  // -------------------------------------------------------------------------------------
-  const int nr = buffer->size(0);
-  const int nc = buffer->size(1);
-
-  unsigned char* pixels = image.GetData();
-
-  for (int ir = 0; ir < nr; ++ir) {
-    for (int ic = 0; ic < nc; ++ic) {
-
-      const int   clr = buffer->get(ir, ic);
-      const rgb_s c   = pallet->get(clr);
-
-      const int offset = 3 * (ir * nc + ic);
-
-      pixels[offset    ] = c.red;
-      pixels[offset + 1] = c.grn;
-      pixels[offset + 2] = c.blu;
-    }
-  }
-
-  const wxSize size = GetClientSize();
-
-  if (size.x <= 0 || size.y <= 0)
-    return;
-
-  wxImage scaled = image.Scale(
-      size.x,
-      size.y,
-      wxIMAGE_QUALITY_NEAREST
-                               );
-
-  bitmap = wxBitmap(scaled);
-
-  Refresh(false);
-
 }
 
 
 // =======================================================================================
-/* Execute on paint.
- *
+/** Destructor.
  */
 // ---------------------------------------------------------------------------------------
-void nmd::FrameBuffer::OnPaint(wxPaintEvent&) {
+nmd::GridData::~GridData(void) {
   // -------------------------------------------------------------------------------------
-
-  wxAutoBufferedPaintDC dc(this);
-
-  dc.SetBackground(*wxBLACK_BRUSH);
-  dc.Clear();
-
-  if (!bitmap.IsOk())
-    return;
-
-  dc.DrawBitmap(bitmap, 0, 0, false);
 }
 
+
 // =======================================================================================
-// **                              F R A M E   B U F F E R                              **
+/** Set Value.
+ * @param[in] nr  number of rows.
+ * @param[in] nc  number of columns.
+ * @param[in] clr color index.
+ */
+// ---------------------------------------------------------------------------------------
+void nmd::GridData::set(const int ir, const int ic, const int clr) {
+  // -------------------------------------------------------------------------------------
+  mtx.lock();
+  data.set(ir, ic, clr);
+  mtx.unlock();
+}
+
+
+// =======================================================================================
+/** Get Value.
+ * @param[in] nr  number of rows.
+ * @param[in] nc  number of columns.
+ * @return clr color index.
+ */
+// ---------------------------------------------------------------------------------------
+int nmd::GridData::get(const int ir, const int ic) {
+  // -------------------------------------------------------------------------------------
+  mtx.lock();
+  const int c =  data.get(ir,ic);
+  mtx.unlock();
+  return c;
+}
+
+
+// =======================================================================================
+/** Clear Data.
+ * @param[in] clr color index.
+ */
+// ---------------------------------------------------------------------------------------
+void nmd::GridData::clear(const int clr) {
+  // -------------------------------------------------------------------------------------
+  mtx.lock();
+  data.clear(clr);
+  mtx.unlock();
+}
+
+
+// =======================================================================================
+// **                                 G R I D   D A T A                                 **
 // ======================================================================== END FILE =====

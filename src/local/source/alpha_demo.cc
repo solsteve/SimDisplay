@@ -36,6 +36,7 @@
 
 #include <Dice.hh>
 #include <appleII_pallet.hh>
+#include <grid_display.hh>
 
 
 // =======================================================================================
@@ -51,7 +52,7 @@ nmd::AlphaDemo::AlphaDemo(nmd::Configuration* cfg) :
 {
   // -------------------------------------------------------------------------------------
   Dice::getInstance().seed_set();
-  grid   = new ScreenBuffer(cfg->numRows, cfg->numColumns);
+  grid   = new GridData(cfg->numRows, cfg->numColumns);
   pallet = new AppleII_Pallet();
 }
 
@@ -106,21 +107,21 @@ wxAnyButton* nmd::AlphaDemo::getMoreButtons(wxPanel* parent, const int n) {
 
 
 // =======================================================================================
-/** Create a FrameBuffer.
+/** Create a DisplayPanel.
  * @param parent pointer to the parent panel.
- * @return pointer to a new FrameBuffer.
+ * @return pointer to a new DisplayPanel.
  */
 // ---------------------------------------------------------------------------------------
-nmd::FrameBuffer* nmd::AlphaDemo::getFrameBuffer(wxPanel* parent) {
+nmd::DisplayPanel* nmd::AlphaDemo::getDisplayPanel(wxPanel* parent) {
   // -------------------------------------------------------------------------------------
 
-  nmd::FrameBuffer* fb = new nmd::FrameBuffer(parent, grid, pallet);
+  nmd::DisplayPanel* dp = new nmd::GridDisplay(parent, grid, pallet);
 
-  fb->SetMinSize(wxSize(config->numColumns * config->scale,
+  dp->SetMinSize(wxSize(config->numColumns * config->scale,
                         config->numRows    * config->scale));
-  fb->SetBackgroundColour(wxColour(config->uiColors.displayPanel));
+  dp->SetBackgroundColour(wxColour(config->uiColors.displayPanel));
 
-  return fb;
+  return dp;
 }
 
 
@@ -147,7 +148,7 @@ struct Life {
  * @return
  */
 // ---------------------------------------------------------------------------------------
-int Count(nmd::ScreenBuffer* A,
+int Count(nmd::GridData* A,
           const int row, const int col, const int alive) {
   // -------------------------------------------------------------------------------------
   int n = 0;
@@ -190,7 +191,7 @@ bool rule(const int a, const int x, const int b) {
  * @return 0 on success.
  */
 // ---------------------------------------------------------------------------------------
-int updateCell(nmd::ScreenBuffer* A,
+int updateCell(nmd::GridData* A,
                const int row, const int col, 
                const Life& life,
                const int dead, const int alive) {
@@ -231,7 +232,7 @@ int updateCell(nmd::ScreenBuffer* A,
  * @param alive color index for live cell.
  */
 // ---------------------------------------------------------------------------------------
-void seed(nmd::ScreenBuffer* A, const int n, const int dead, const int alive) {
+void seed(nmd::GridData* A, const int n, const int dead, const int alive) {
   // -------------------------------------------------------------------------------------
   Dice& dd = Dice::getInstance();
   const int nrow = A->size(0);
