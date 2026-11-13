@@ -34,13 +34,26 @@
 #include <trncmp.hh>
 #include <TLogger.hh>
 
+#include <linalg/vec2.hh>
+
+
+
+void display(const vec2& v) {
+  const real8_t x = v.x;
+  const real8_t y = v.y;
+  std::cout << "X: " << x << "  Y: " << y << std::endl;
+}
+
 
 // =======================================================================================
 void TEST01(void) {
   // -------------------------------------------------------------------------------------
-  TLogger& logger = TLogger::getInstance();
-
-  logger.info( "ILH" );
+  vec2 v(1.0,2.0);
+  real8_t x = 3.0;
+  real8_t y = 4.0;
+  display(v);
+  display({x,y});
+  display(vec2{5.3});
 }
 
 
@@ -51,7 +64,7 @@ int main( void ) {
   TLogger::getInstance().setConsoleLevel( TLogger::DEBUG );
 
   TEST01();
-  
+
   return 0;
 }
 
